@@ -54,7 +54,7 @@ class Model
         $foreignKeysByTable = $foreignKeys['ordered'];
 
         if (!empty($namespace)) {
-            $this->namespace = ' namespace '.$namespace.';';
+            $this->namespace = "\n".'namespace '.$namespace.';';
         }
 
         $this->class = StringUtils::prettifyTableName($table, $prefix);
