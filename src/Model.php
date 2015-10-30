@@ -109,6 +109,17 @@ class Model
     {
         $file = '<?php'.$this->namespace.LF.LF;
 
+        $file .= $this->namespace.LF.LF;
+
+        $rutaModel = $this->baseModel;
+
+        if(substr($rutaModel, 0, 1) == '\\')
+        {
+            $rutaModel = substr($rutaModel, 1);
+        }
+
+        $file .= 'use '.$rutaModel.';'.LF.LF;
+
         $file .= '/**'.LF;
         $file .= ' * Eloquent class to describe the '.$this->table.' table'.LF;
         $file .= ' *'.LF;
@@ -141,17 +152,17 @@ class Model
         if (!empty($this->dates)) {
             $file .= TAB.'public function getDates()'.LF;
             $file .= TAB.'{'.LF;
-            $file .= TAB.TAB.'return array('.StringUtils::implodeAndQuote(', ', $this->dates).');'.LF;
+            $file .= TAB.TAB.'return ['.LF.TAB.TAB.TAB.StringUtils::implodeAndQuote(','.LF.TAB.TAB.TAB, $this->dates).LF.TAB.TAB.'];'.LF;
             $file .= TAB.'}'.LF.LF;
         }
 
         // most fields are considered as fillable
-        $wrap = TAB.'protected $fillable = array('.StringUtils::implodeAndQuote(', ', $this->fillable).');'.LF.LF;
+        $wrap = TAB.'protected $fillable = ['.LF.TAB.TAB.StringUtils::implodeAndQuote(','.LF.TAB.TAB, $this->fillable).LF.TAB.'];'.LF.LF;
         $file .= wordwrap($wrap, ModelGenerator::$lineWrap, LF.TAB.TAB);
 
         // except for the hidden ones
         if (!empty($this->hidden)) {
-            $file .= TAB.'protected $hidden = array('.StringUtils::implodeAndQuote(', ', $this->hidden).');'.LF.LF;
+            $file .= TAB.'protected $hidden = ['.LF.TAB.TAB.StringUtils::implodeAndQuote(','.LF.TAB.TAB, $this->hidden).LF.TAB.'];'.LF.LF;
         }
 
         // add all relations
