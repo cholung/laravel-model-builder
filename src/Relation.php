@@ -47,7 +47,14 @@ class Relation
      */
     public function __toString()
     {
-        $string = TAB.'public function '.$this->remoteFunction.'()'.LF;
+        $string  = TAB.'/**'.LF;
+        $string .= TAB.' * Relations built with ModelGenerator.'.LF;
+        $string .= TAB.' *'.LF;
+        // Make type capitalized for comments
+        $typeCapital = ucfirst($this->type);
+        $string .= TAB.' * @return \\Illuminate\\Database\\Eloquent\\Relations\\'.$typeCapital.LF;
+        $string .= TAB.' */'.LF;
+        $string .= TAB.'public function '.$this->remoteFunction.'()'.LF;
         $string .= TAB.'{'.LF;
         $string .= TAB.TAB.'return $this->'.$this->type.'(';
         $string .= StringUtils::singleQuote($this->remoteClass);

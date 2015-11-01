@@ -12,7 +12,7 @@ class ModelGenerator5 extends Controller
     public function start()
     {
         // This is the model that all your others will extend
-        $baseModel = '\Illuminate\Database\Eloquent\Model'; // default laravel 5
+        $baseModel = 'Illuminate\Database\Eloquent\Model'; // default laravel 5 // Changed for new rendering
 
         // This is the path where we will store your new models
         $path = storage_path('models');

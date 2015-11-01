@@ -145,11 +145,7 @@ abstract class StringUtils
     {
         $singular = str_singular($value);
         if ($singular == $value) {
-            if(substr($value, -1) == 's')
-            {
-                $singular = substr($value, -1);
-            }
-            echo 'warning: automatic singularization of '.$value.' failed, using '.$singular.'. But singularizing done by substr()'.LF;
+            echo 'warning: automatic singularization of '.$value.' failed, using '.$singular.LF;
         }
 
         return $singular;

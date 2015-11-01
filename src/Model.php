@@ -111,14 +111,8 @@ class Model
 
         $file .= $this->namespace.LF.LF;
 
-        $rutaModel = $this->baseModel;
-
-        if(substr($rutaModel, 0, 1) == '\\')
-        {
-            $rutaModel = substr($rutaModel, 1);
-        }
-
-        $file .= 'use '.$rutaModel.';'.LF.LF;
+        // Try to render everything neat
+        $file .= 'use '.$this->baseModel.';'.LF.LF;
 
         $file .= '/**'.LF;
         $file .= ' * Eloquent class to describe the '.$this->table.' table'.LF;
@@ -127,29 +121,54 @@ class Model
         $file .= ' */'.LF;
 
         // a new class that extends the provided baseModel
-        $file .= 'class '.$this->class.' extends '.$this->baseModel.LF;
+        $file .= 'class '.$this->class.' extends '.$baseModel.LF;
         $file .= '{'.LF;
 
         // the name of the mysql table
+        $file .= TAB.'/**'.LF;
+        $file .= TAB.' * The database table used by the model.'.LF;
+        $file .= TAB.' *'.LF;
+        $file .= TAB.' * @var string'.LF;
+        $file .= TAB.' */'.LF;
         $file .= TAB.'protected $table = '.StringUtils::singleQuote($this->table).';'.LF.LF;
 
         // primary key defaults to "id"
         if ($this->primaryKey !== 'id') {
+            $file .= TAB.'/**'.LF;
+            $file .= TAB.' * Primary key defaults to id.'.LF;
+            $file .= TAB.' *'.LF;
+            $file .= TAB.' * @var string'.LF;
+            $file .= TAB.' */'.LF;
             $file .= TAB.'public $primaryKey = '.StringUtils::singleQuote($this->primaryKey).';'.LF.LF;
         }
 
         // timestamps defaults to true
         if (!$this->timestamps) {
+            $file .= TAB.'/**'.LF;
+            $file .= TAB.' * Indicates if the model should be timestamped.'.LF;
+            $file .= TAB.' *'.LF;
+            $file .= TAB.' * @var bool'.LF;
+            $file .= TAB.' */'.LF;
             $file .= TAB.'public $timestamps = '.var_export($this->timestamps, true).';'.LF.LF;
         }
 
         // incrementing defaults to true
         if (!$this->incrementing) {
+            $file .= TAB.'/**'.LF;
+            $file .= TAB.' * Indicates if the model should be incremented.'.LF;
+            $file .= TAB.' *'.LF;
+            $file .= TAB.' * @var bool'.LF;
+            $file .= TAB.' */'.LF;
             $file .= TAB.'public $incrementing = '.var_export($this->incrementing, true).';'.LF.LF;
         }
 
         // all date fields
         if (!empty($this->dates)) {
+            $file .= TAB.'/**'.LF;
+            $file .= TAB.' * All date fields of the model.'.LF;
+            $file .= TAB.' *'.LF;
+            $file .= TAB.' * @return array'.LF;
+            $file .= TAB.' */'.LF;
             $file .= TAB.'public function getDates()'.LF;
             $file .= TAB.'{'.LF;
             $file .= TAB.TAB.'return ['.LF.TAB.TAB.TAB.StringUtils::implodeAndQuote(','.LF.TAB.TAB.TAB, $this->dates).LF.TAB.TAB.'];'.LF;
@@ -157,11 +176,30 @@ class Model
         }
 
         // most fields are considered as fillable
-        $wrap = TAB.'protected $fillable = ['.LF.TAB.TAB.StringUtils::implodeAndQuote(','.LF.TAB.TAB, $this->fillable).LF.TAB.'];'.LF.LF;
+        $file .= TAB.'/**'.LF;
+        $file .= TAB.' * The attributes that are mass assignable.'.LF;
+        $file .= TAB.' *'.LF;
+        $file .= TAB.' * @var array'.LF;
+        $file .= TAB.' */'.LF;
+        // Filler for a better rendered code on empty results
+        if(empty($this->fillable))
+        {
+            $fillResults = '//';
+        }
+        else
+        {
+            $fillResults = StringUtils::implodeAndQuote(','.LF.TAB.TAB, $this->fillable);
+        }
+        $wrap = TAB.'protected $fillable = ['.LF.TAB.TAB.$fillResults.LF.TAB.'];'.LF.LF;
         $file .= wordwrap($wrap, ModelGenerator::$lineWrap, LF.TAB.TAB);
 
         // except for the hidden ones
         if (!empty($this->hidden)) {
+            $file .= TAB.'/**'.LF;
+            $file .= TAB.' * The attributes excluded from the model\'s JSON form.'.LF;
+            $file .= TAB.' *'.LF;
+            $file .= TAB.' * @var array'.LF;
+            $file .= TAB.' */'.LF;
             $file .= TAB.'protected $hidden = ['.LF.TAB.TAB.StringUtils::implodeAndQuote(','.LF.TAB.TAB, $this->hidden).LF.TAB.'];'.LF.LF;
         }
 
