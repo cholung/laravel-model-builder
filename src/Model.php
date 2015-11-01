@@ -112,7 +112,12 @@ class Model
         $file .= $this->namespace.LF.LF;
 
         // Try to render everything neat
-        $file .= 'use '.$this->baseModel.';'.LF.LF;
+        $modelRoute = $this->baseModel;
+        if(substr($modelRoute, 0, 1) == '\\')
+        {
+            $modelRoute = substr($modelRoute, 1);
+        }
+        $file .= 'use '.$modelRoute.';'.LF.LF;
 
         $file .= '/**'.LF;
         $file .= ' * Eloquent class to describe the '.$this->table.' table'.LF;
