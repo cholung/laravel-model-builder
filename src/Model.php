@@ -112,6 +112,7 @@ class Model
         $file .= $this->namespace.LF.LF;
 
         // Try to render everything neat
+        $baseModel = 'Model';
         $modelRoute = $this->baseModel;
         if(substr($modelRoute, 0, 1) == '\\')
         {
