@@ -52,7 +52,7 @@ class Relation
         $remoteCapital = ucfirst($this->remoteFunction);
         $remoteClassSplit = explode('\\', $this->remoteClass);
         $remoteClass = last($remoteClassSplit);
-        $string .= TAB.' * '.$remoteCapital.' '.$this->type.' '.$remoteClass.LF;
+        $string .= TAB.' * '.$this->type.' '.$remoteClass.LF;
         $string .= TAB.' *'.LF;
         // Make type capitalized for comments
         $typeCapital = ucfirst($this->type);
