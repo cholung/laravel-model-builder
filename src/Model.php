@@ -107,7 +107,7 @@ class Model
      */
     public function createModel()
     {
-        $file = '<?php'.LF.LF;
+        $file = '<?php'.LF;
 
         $file .= $this->namespace.LF.LF;
 
